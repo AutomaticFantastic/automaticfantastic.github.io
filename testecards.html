@@ -1,0 +1,249 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Seleção de Palestras — Mini Web App</title>
+  <style>
+    :root {
+      --bg: #0f172a; /* slate-900 */
+      --surface: #111827; /* gray-900 */
+      --surface-2: #1f2937; /* gray-800 */
+      --text: #e5e7eb; /* gray-200 */
+      --muted: #9ca3af; /* gray-400 */
+      --accent: #22c55e; /* green-500 */
+      --accent-2: #84cc16; /* lime-500 */
+      --card-border: #334155; /* slate-700 */
+      --selected: #2563eb; /* blue-600 */
+      --shadow: 0 10px 25px rgba(0,0,0,.35);
+      --radius: 16px;
+      --maxw: 1100px;
+    }
+
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      background: radial-gradient(1200px 600px at 15% 0%, #0b1225, var(--bg));
+      color: var(--text);
+    }
+
+    .app { max-width: var(--maxw); margin: 0 auto; padding: 1.25rem; }
+
+    /* Barra fixa de totais */
+    .toolbar {
+      position: sticky; top: 0; z-index: 50;
+      background: linear-gradient(180deg, rgba(17,24,39,.95), rgba(17,24,39,.85));
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid #1f2937;
+    }
+    .toolbar .inner { max-width: var(--maxw); margin: 0 auto; padding: .75rem 1.25rem; display: grid; grid-template-columns: 1fr auto; gap: .75rem; align-items: center; }
+    .totals { display: flex; flex-wrap: wrap; gap: .75rem 1rem; align-items: baseline; }
+    .totals .pill { display: inline-flex; align-items: center; gap: .5rem; padding: .5rem .75rem; border-radius: 999px; background: var(--surface-2); border: 1px solid #293445; box-shadow: var(--shadow); }
+    .totals .label { color: var(--muted); font-size: .85rem; }
+    .totals .value { font-weight: 700; letter-spacing: .02em; }
+    .toolbar button { appearance: none; border: 1px solid #2c3a4d; background: #0b1324; color: var(--text); padding: .55rem .9rem; border-radius: 10px; cursor: pointer; font-weight: 600; }
+    .toolbar button:hover { border-color: #375074; }
+
+    /* Grade de cards */
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; margin-top: 1rem; }
+
+    /* Card alto, estilo "baralho" */
+    .card {
+      display: flex; flex-direction: column; justify-content: space-between;
+      min-height: 360px; /* alto verticalmente */
+      aspect-ratio: 3 / 4; /* lembra carta de baralho */
+      background: linear-gradient(180deg, var(--surface), #0b1324);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1rem;
+      position: relative;
+      transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+      outline: none;
+    }
+    .card:hover { transform: translateY(-2px); box-shadow: 0 14px 30px rgba(0,0,0,.45); }
+    .card.selected { border-color: var(--selected); box-shadow: 0 16px 34px rgba(37,99,235,.25); }
+
+    .card-header h3 { margin: 0; font-size: 1.15rem; line-height: 1.3; }
+    .subtitle { margin: .25rem 0 0; color: var(--accent-2); font-weight: 600; }
+    .desc { margin: .75rem 0 1rem; color: var(--muted); }
+    .meta { display: flex; justify-content: space-between; gap: .75rem; margin-top: auto; padding-top: .5rem; }
+    .badge { display: inline-flex; align-items: center; gap: .35rem; background: #0b1324; border: 1px solid #243246; padding: .35rem .6rem; border-radius: 12px; font-weight: 600; }
+    .duration::before { content: "⏱"; }
+    .price::before { content: "💰"; }
+
+    .select-indicator { position: absolute; top: .75rem; right: .75rem; display: none; }
+    .card.selected .select-indicator { display: inline-flex; }
+    .check { width: 26px; height: 26px; display: inline-grid; place-items: center; border-radius: 50%; background: var(--selected); box-shadow: 0 0 0 2px rgba(255,255,255,.2) inset; }
+
+    /* Acessibilidade visual ao focar com teclado */
+    .card:focus { border-color: #60a5fa; box-shadow: 0 0 0 3px rgba(96,165,250,.35); }
+
+    footer { max-width: var(--maxw); margin: 3rem auto 2rem; padding: 0 1.25rem; color: var(--muted); font-size: .9rem; }
+    footer code { background: #0b1324; border: 1px solid #243246; padding: .15rem .35rem; border-radius: 6px; }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <div class="inner">
+      <div class="totals">
+        <span class="pill"><span class="label">Selecionados</span> <span class="value" data-selected-count>0</span></span>
+        <span class="pill"><span class="label">Tempo total</span> <span class="value" data-total-time>0min</span></span>
+        <span class="pill"><span class="label">Valor total</span> <span class="value" data-total-price>R$ 0,00</span></span>
+      </div>
+      <div>
+        <button id="clear">Limpar seleção</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="app">
+    <header>
+      <h1>Catálogo de Palestras</h1>
+      <p style="color: var(--muted)">Clique ou pressione <strong>Enter</strong>/<strong>Espaço</strong> em um card para selecioná-lo. A barra no topo soma a <em>duração</em> e o <em>preço</em> dos cards selecionados.</p>
+    </header>
+
+    <!-- ⚠️ EDITE A LISTA DE PALESTRAS NESTE BLOCO JSON -->
+    <script id="card-data" type="application/json">
+    [
+      {
+        "titulo": "Justiça Restaurativa na Prática",
+        "subtitulo": "Casos, resultados e desafios",
+        "descricao": "Panorama prático de iniciativas de Justiça Restaurativa em MP estaduais, com foco em resultados mensuráveis e indicadores de sucesso.",
+        "duracaoMin": 90,
+        "preco": 120
+      },
+      {
+        "titulo": "Direito Visual aplicado a peças processuais",
+        "subtitulo": "Técnicas e padrões",
+        "descricao": "Como aplicar princípios de Direito Visual para tornar documentos jurídicos mais claros, acessíveis e persuasivos.",
+        "duracaoMin": 75,
+        "preco": 100
+      },
+      {
+        "titulo": "Autocomposição e Acordos Estruturais",
+        "subtitulo": "Soluções dialogadas",
+        "descricao": "Ferramentas para implementar práticas de autocomposição, com estudos de caso e fluxos procedimentais.",
+        "duracaoMin": 80,
+        "preco": 110
+      },
+      {
+        "titulo": "Proteção de Dados (LGPD) no MP",
+        "subtitulo": "Bases legais e boas práticas",
+        "descricao": "Fundamentos da LGPD, gestão de consentimento e segurança da informação em órgãos públicos.",
+        "duracaoMin": 60,
+        "preco": 90
+      },
+      {
+        "titulo": "Investigação Digital e Cadeia de Custódia",
+        "subtitulo": "Fundamentos e ferramentas",
+        "descricao": "Boas práticas de coleta, preservação e análise de evidências digitais.",
+        "duracaoMin": 120,
+        "preco": 180
+      },
+      {
+        "titulo": "Comunicação Institucional Eficiente",
+        "subtitulo": "Identidade visual e clareza",
+        "descricao": "Alinhamento da comunicação ao design institucional, padronização de elementos visuais e linguagem cidadã.",
+        "duracaoMin": 50,
+        "preco": 80
+      }
+    ]
+    </script>
+
+    <section class="grid" id="cardGrid" aria-label="Lista de palestras"></section>
+  </div>
+
+  <footer>
+    <p>ℹ️ Para editar, altere o bloco <code>&lt;script id="card-data" type="application/json"&gt;</code> acima.
+    Use <code>duracaoMin</code> em minutos e <code>preco</code> em reais (apenas número).</p>
+  </footer>
+
+  <script>
+  (function(){
+    const dataEl = document.getElementById('card-data');
+    /** Lê a lista de palestras do bloco JSON facilmente editável */
+    const palestras = JSON.parse((dataEl.textContent || '').trim() || '[]');
+
+    const grid = document.getElementById('cardGrid');
+    const currencyBRL = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
+
+    function formatDuration(min){
+      const h = Math.floor(min/60), m = min % 60;
+      let out = '';
+      if(h>0) out += `${h}h`;
+      if(m>0) out += (h>0? ' ' : '') + `${m}min`;
+      return out || '0min';
+    }
+
+    function render(){
+      grid.innerHTML = '';
+      palestras.forEach((p, idx) => {
+        const card = document.createElement('article');
+        card.className = 'card';
+        card.tabIndex = 0;
+        card.setAttribute('role', 'checkbox');
+        card.setAttribute('aria-checked', 'false');
+
+        card.dataset.index = String(idx);
+        card.dataset.selected = 'false';
+        card.dataset.duracaoMin = String(Number(p.duracaoMin || 0));
+        card.dataset.preco = String(Number(p.preco || 0));
+
+        card.innerHTML = `
+          <div class="card-header">
+            <h3>${p.titulo || 'Sem título'}</h3>
+            <p class="subtitle">${p.subtitulo || ''}</p>
+          </div>
+          <p class="desc">${p.descricao || ''}</p>
+          <div class="meta">
+            <span class="badge duration" title="Duração">${formatDuration(Number(p.duracaoMin || 0))}</span>
+            <span class="badge price" title="Preço">${currencyBRL.format(Number(p.preco || 0))}</span>
+          </div>
+          <div class="select-indicator" aria-hidden="true">
+            <span class="check">✓</span>
+          </div>
+        `;
+
+        function toggle(){
+          const isSelected = card.dataset.selected === 'true';
+          card.dataset.selected = String(!isSelected);
+          card.setAttribute('aria-checked', String(!isSelected));
+          card.classList.toggle('selected', !isSelected);
+          updateTotals();
+        }
+        card.addEventListener('click', toggle);
+        card.addEventListener('keydown', (e) => {
+          if(e.key === ' ' || e.key === 'Enter') { e.preventDefault(); toggle(); }
+        });
+
+        grid.appendChild(card);
+      });
+    }
+
+    function updateTotals(){
+      const selected = Array.from(grid.querySelectorAll('.card.selected'));
+      const totalMin = selected.reduce((sum, el) => sum + Number(el.dataset.duracaoMin || 0), 0);
+      const totalPrice = selected.reduce((sum, el) => sum + Number(el.dataset.preco || 0), 0);
+      document.querySelector('[data-selected-count]').textContent = String(selected.length);
+      document.querySelector('[data-total-time]').textContent = formatDuration(totalMin);
+      document.querySelector('[data-total-price]').textContent = currencyBRL.format(totalPrice);
+    }
+
+    document.getElementById('clear').addEventListener('click', () => {
+      grid.querySelectorAll('.card.selected').forEach(el => {
+        el.dataset.selected = 'false';
+        el.setAttribute('aria-checked', 'false');
+        el.classList.remove('selected');
+      });
+      updateTotals();
+    });
+
+    render();
+    updateTotals();
+  })();
+  </script>
+</body>
+</html>
