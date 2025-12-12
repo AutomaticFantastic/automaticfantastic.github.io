@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -240,32 +239,248 @@
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       /* Tabela de dados (edite à vontade) */
-      const PALESTRAS = [
-        { titulo:'Repensando Punição', subtitulo:'O estranho conceito de não punir na navegação',
-          descricao:'Como a indústria da aviação prioriza resolver o problema ao invés de punir para que o processo de aprendizagem aumente drasticamente a segurança.',
-          tempo:15, valor:450 },
-        { titulo:'O Básico sobre Direito Visual', subtitulo:'Documentos agradáveis',
-          descricao:'Regras essenciais para criar documentos fáceis de serem lidos e fáceis de o leitor encontrar o que precisa.',
-          tempo:45, valor:1200 },
-        { titulo:'Suporte Incondicional', subtitulo:'',
-          descricao:'A importância de uma pessoa chave para fazer as atividades do dia fluírem e a organização ver os resultados.',
-          tempo:15, valor:350 },
-        { titulo:'Inovação Além da Tecnologia', subtitulo:'',
-          descricao:'Exemplos de inovações em áreas além da TI para repensar com mais impacto o trabalho. Inovação na Administração.',
-          tempo:25, valor:600 },
-        { titulo:'Qual Projeto Tocar Pra Frente?', subtitulo:'Escolhendo em grupo',
-          descricao:'Design thinking simples para escolher em grupo e promover o projeto ideal a ser executado.',
-          tempo:30, valor:700 },
-        { titulo:'O Básico sobre Linguagem Simples', subtitulo:'Fácil de entender',
-          descricao:'Como converter textos complexos para serem compreendidos facilmente.',
-          tempo:20, valor:400 },
-        { titulo:'Do Lab Para o Mundo', subtitulo:'',
-          descricao:'Os típicos problemas de quando um projeto experimental precisa operar por grande quantidade de pessoas.',
-          tempo:30, valor:900 },
-        { titulo:'Tem Que Ter Um Chato', subtitulo:'Montando um bom time',
-          descricao:'A importância de trazer pessoas com diversidade de pensamento e visão para o time. Mais do que alinhamento na missão, o essencial.',
-          tempo:20, valor:500 }
-      ];
+
+const PALESTRAS = [
+  {
+    "titulo": "Quebrando regras",
+    "subtitulo": "Além do sandbox",
+    "descricao": "O que é um sandbox no governo, a importância de quebrar regras e exemplos de boas quebradas de regra.",
+    "tempo": 30,
+    "valor": 900
+  },
+  {
+    "titulo": "Situação da IA",
+    "subtitulo": "Um reality check",
+    "descricao": "Atual situação da tecnologia, mostro como ela não é tão boa como se imaginava e como ela é melhor do que se imaginava.",
+    "tempo": 45,
+    "valor": 1350
+  },
+  {
+    "titulo": "Pra que um lab?",
+    "subtitulo": "",
+    "descricao": "Atual situação da tecnologia, mostro como ela não é tão boa como se imaginava e como ela é melhor do que se imaginava.",
+    "tempo": 20,
+    "valor": 600
+  },
+  {
+    "titulo": "Qual Projeto Tocar Pra Frente?",
+    "subtitulo": "Escolhendo em grupo",
+    "descricao": "Design thinking simples para escolher em grupo qual o próximo projeto ideal a ser executado.",
+    "tempo": 30,
+    "valor": 900
+  },
+  {
+    "titulo": "Do Lab Para O Mundo",
+    "subtitulo": "E agora?",
+    "descricao": "Os típicos problemas de escalonamento de projetos e como se preparar para uso do seu experimento por uma grande quantidade de pessoas.",
+    "tempo": 30,
+    "valor": 900
+  },
+  {
+    "titulo": "Mãos dadas com a segurança: evitando problemas futuros",
+    "subtitulo": "",
+    "descricao": "Mostro a importância de já iniciar projetos experimentais com a segurança em mente.",
+    "tempo": 20,
+    "valor": 600
+  },
+  {
+    "titulo": "Quando O Beta Vira Oficial Sem Querer",
+    "subtitulo": "",
+    "descricao": "Histórias de experimentos e softwares em teste que acabaram sendo usados pelo público e as consequências dessa situação.",
+    "tempo": 15,
+    "valor": 450
+  },
+  {
+    "titulo": "Repensando Punição",
+    "subtitulo": "O estranho conceito de não punir na aviação",
+    "descricao": "Atual situação da tecnologia, mostro como ela não é tão boa como se imaginava e como ela é melhor do que se imaginava.",
+    "tempo": 15,
+    "valor": 450
+  },
+  {
+    "titulo": "Questionando Tudo",
+    "subtitulo": "A importância de repensar atividades administrativas",
+    "descricao": "Mostro como é importante repensar os motivos de determinada atividade administrativa existir e como preparar a mente para refletir sobre fluxos de trabalho.",
+    "tempo": 20,
+    "valor": 600
+  },
+  {
+    "titulo": "Medo de Inovar é Normal",
+    "subtitulo": "",
+    "descricao": "Histórico de como a cultura da burocracia fez os órgãos terem medo de inovar. Maneiras que explicam como administradores e servidores evitam usar novidades.",
+    "tempo": 30,
+    "valor": 900
+  },
+  {
+    "titulo": "A Regra é Não Ter Regras",
+    "subtitulo": "O método Netflix",
+    "descricao": "O estilo completamente diferente de administrar da Netflix que usa contexto invés de burocracia. Mostro como gerenciar usando contexto e como esse método pode ser adaptado dentro do governo.",
+    "tempo": 60,
+    "valor": 1800
+  },
+  {
+    "titulo": "Como definir um lab legalmente",
+    "subtitulo": "",
+    "descricao": "Exemplos de atos e leis para definir claramente um laboratório de inovação no seu órgão.",
+    "tempo": 30,
+    "valor": 900
+  },
+  {
+    "titulo": "O básico do Design Thinking",
+    "subtitulo": "",
+    "descricao": "Exemplos de canvas úteis para melhor visualizar o que se deseja resolver.",
+    "tempo": 60,
+    "valor": 1800
+  },
+  {
+    "titulo": "O Básico Sobre Linguagem Simples",
+    "subtitulo": "Fácil de entender",
+    "descricao": "Como converter textos complexos para serem compreendidos facilmente.",
+    "tempo": 60,
+    "valor": 1800
+  },
+  {
+    "titulo": "Criando notícias sobre o lab",
+    "subtitulo": "",
+    "descricao": "Exemplos de como divulgar positivamente os trabalhos do laboratório de inovação e como registrar o histórico do lab.",
+    "tempo": 25,
+    "valor": 750
+  },
+  {
+    "titulo": "Ferramenta Canva.com",
+    "subtitulo": "",
+    "descricao": "Demonstração do que o Canva pode fazer",
+    "tempo": 60,
+    "valor": 1800
+  },
+  {
+    "titulo": "Premiações",
+    "subtitulo": "",
+    "descricao": "Como inscrever seus projetos em premiações pelo Brasil.",
+    "tempo": 20,
+    "valor": 600
+  },
+  {
+    "titulo": "Exemplos de experimentos",
+    "subtitulo": "",
+    "descricao": "Exemplos reais de experimentos reais executados por laboratóris, tanto os que deram certo quanto os que falharam.",
+    "tempo": 60,
+    "valor": 1800
+  },
+  {
+    "titulo": "Falhando rápido",
+    "subtitulo": "E acertando em cheio",
+    "descricao": "Como o conceito de falhar rápido é essencial para experimentos do laboratório.",
+    "tempo": 20,
+    "valor": 600
+  },
+  {
+    "titulo": "Montando uma rede de laboratórios",
+    "subtitulo": "",
+    "descricao": "Como funciona uma rede que reúne laboratórios de inovação de órgãos amigos e como compartilhar informações.",
+    "tempo": 15,
+    "valor": 450
+  },
+  {
+    "titulo": "Inspirações mil",
+    "subtitulo": "",
+    "descricao": "livros, podcasts, filmes, notícias, e muita coisa aleatória para trazer inspiração para o laboratório",
+    "tempo": 20,
+    "valor": 600
+  },
+  {
+    "titulo": "Todo projeto tem um dono",
+    "subtitulo": "",
+    "descricao": "A importância de pessoas realmente interessadas para a execução de projetos de sucesso.",
+    "tempo": 15,
+    "valor": 450
+  },
+  {
+    "titulo": "Montando eventos de inovação",
+    "subtitulo": "",
+    "descricao": "Detalhes para você montar seu próprio evento de inovação para inspirar seu órgão.",
+    "tempo": 30,
+    "valor": 900
+  },
+  {
+    "titulo": "Visitando eventos de inovação",
+    "subtitulo": "",
+    "descricao": "Lista de eventos nacionais importantes para quem trabalha com inovação.",
+    "tempo": 15,
+    "valor": 450
+  },
+  {
+    "titulo": "Testando ferramentas",
+    "subtitulo": "",
+    "descricao": "Como testar ferramentas novas de maneira efetiva para possível uso do órgão.",
+    "tempo": 25,
+    "valor": 750
+  },
+  {
+    "titulo": "Inovando no pagamento",
+    "subtitulo": "",
+    "descricao": "Ideias diferentes do tradicional quando se fala de pagamentos feitos pelo órgão.",
+    "tempo": 15,
+    "valor": 450
+  },
+  {
+    "titulo": "Como definir claramente qual problema resolver",
+    "subtitulo": "",
+    "descricao": "Design thinking específico para o laboratório descobrir visualmente qual o problema real a ser atacado.",
+    "tempo": 60,
+    "valor": 1800
+  },
+  {
+    "titulo": "Complicações no Lab!",
+    "subtitulo": "Lista de problemas",
+    "descricao": "Lista de todos os problemas que já tivemos e vimos em outros labs, pra sua equipe ficar preparada.",
+    "tempo": 45,
+    "valor": 1350
+  },
+  {
+    "titulo": "Montando Um Time Nota 10",
+    "subtitulo": "E tem que incluir um chato",
+    "descricao": "A importância em juntar diferentes personalidades e pensamentos para um time nota 10 e como até um membro caxias agrega ao time.",
+    "tempo": 20,
+    "valor": 600
+  },
+  {
+    "titulo": "Inovação Além da Tecnologia",
+    "subtitulo": "",
+    "descricao": "Exemplos de inovações em áreas além da T.I. e a importância de repensar fluxos de trabalho. Inovação na Administração.",
+    "tempo": 25,
+    "valor": 750
+  },
+  {
+    "titulo": "Suporte Incondicional",
+    "subtitulo": "",
+    "descricao": "A importância de uma pessoa chave para fazer as atividades do lab fluírem e para o órgão ver os resultados.",
+    "tempo": 15,
+    "valor": 450
+  },
+  {
+    "titulo": "Horas trabalhadas é uma bobagem: acabando com a obsessão por horários",
+    "subtitulo": "",
+    "descricao": "O que importa é a missão a ser cumprida, o prazo da missão. 9 grávidas não geram uma criança em um mês. Hoje em dia trabalho muito aleatório.",
+    "tempo": 15,
+    "valor": 450
+  },
+  {
+    "titulo": "Comunicação assíncrona, reunião de amigos, painel com os projetos.",
+    "subtitulo": "",
+    "descricao": "",
+    "tempo": 30,
+    "valor": 900
+  },
+  {
+    "titulo": "O Básico Sobre Direito Visual",
+    "subtitulo": "Documentos agradáveis",
+    "descricao": "Regras essenciais para criar documentos fáceis de serem lidos e fáceis do leitor encontrar o que precisa.",
+    "tempo": 45,
+    "valor": 1350
+  }
+];
+
 
       const cardsEl = document.getElementById('cards');
       const btnPrint = document.getElementById('btnPrint');
@@ -391,3 +606,4 @@
   </script>
 </body>
 </html>
+
