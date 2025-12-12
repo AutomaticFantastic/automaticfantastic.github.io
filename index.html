@@ -4,246 +4,390 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Seleção de Palestras — Mini Web App</title>
+  <title>PARALABS</title>
   <style>
-    :root {
-      --bg: #0f172a; /* slate-900 */
-      --surface: #111827; /* gray-900 */
-      --surface-2: #1f2937; /* gray-800 */
-      --text: #e5e7eb; /* gray-200 */
-      --muted: #9ca3af; /* gray-400 */
-      --accent: #22c55e; /* green-500 */
-      --accent-2: #84cc16; /* lime-500 */
-      --card-border: #334155; /* slate-700 */
-      --selected: #2563eb; /* blue-600 */
-      --shadow: 0 10px 25px rgba(0,0,0,.35);
-      --radius: 16px;
-      --maxw: 1100px;
+    :root{
+      --bg:#1f2b48;
+      --card-top:#3a5a87;
+      --card-bottom:#2c4e73;
+      --card-outline:rgba(255,255,255,0.12);
+      --text:#e8f1ff;
+      --text-dim:#c6d2e8;
+      --badge:#ff5a65; --badge-dark:#c53d46;
+      --shadow:0 10px 18px rgba(0,0,0,.35);
+
+      /* seleção */
+      --sel-top:#3c7b5f; --sel-bottom:#2a5a45; --sel-border:rgba(120,230,175,.9);
     }
 
-    html, body { height: 100%; }
-    body {
-      margin: 0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Arial, "Apple Color Emoji", "Segoe UI Emoji";
-      background: radial-gradient(1200px 600px at 15% 0%, #0b1225, var(--bg));
-      color: var(--text);
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,"Helvetica Neue",Arial,"Noto Sans",sans-serif;
+      background:radial-gradient(1200px 600px at 10% 0%, #21365f 0%, var(--bg) 55%), var(--bg);
+      color:var(--text);
     }
 
-    .app { max-width: var(--maxw); margin: 0 auto; padding: 1.25rem; }
-
-    /* Barra fixa de totais */
-    .toolbar {
-      position: sticky; top: 0; z-index: 50;
-      background: linear-gradient(180deg, rgba(17,24,39,.95), rgba(17,24,39,.85));
-      backdrop-filter: blur(6px);
-      border-bottom: 1px solid #1f2937;
+    /* Barra superior fixa */
+    header{
+      position:sticky;top:0;z-index:9999;
+      backdrop-filter:saturate(120%) blur(8px);
+      background:linear-gradient(180deg, rgba(16,25,44,.92), rgba(16,25,44,.75));
+      border-bottom:1px solid rgba(255,255,255,.08);
     }
-    .toolbar .inner { max-width: var(--maxw); margin: 0 auto; padding: .75rem 1.25rem; display: grid; grid-template-columns: 1fr auto; gap: .75rem; align-items: center; }
-    .totals { display: flex; flex-wrap: wrap; gap: .75rem 1rem; align-items: baseline; }
-    .totals .pill { display: inline-flex; align-items: center; gap: .5rem; padding: .5rem .75rem; border-radius: 999px; background: var(--surface-2); border: 1px solid #293445; box-shadow: var(--shadow); }
-    .totals .label { color: var(--muted); font-size: .85rem; }
-    .totals .value { font-weight: 700; letter-spacing: .02em; }
-    .toolbar button { appearance: none; border: 1px solid #2c3a4d; background: #0b1324; color: var(--text); padding: .55rem .9rem; border-radius: 10px; cursor: pointer; font-weight: 600; }
-    .toolbar button:hover { border-color: #375074; }
+    .wrap{max-width:1200px;margin:0 auto;padding:16px 20px}
+    .title{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:6px}
+    .title h1{font-size:1.25rem;margin:0}
+    .top-actions{display:flex;gap:10px;flex-wrap:wrap}
 
-    /* Grade de cards */
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; margin-top: 1rem; }
-
-    /* Card alto, estilo "baralho" */
-    .card {
-      display: flex; flex-direction: column; justify-content: space-between;
-      min-height: 360px; /* alto verticalmente */
-      aspect-ratio: 3 / 4; /* lembra carta de baralho */
-      background: linear-gradient(180deg, var(--surface), #0b1324);
-      border: 1px solid var(--card-border);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 1rem;
-      position: relative;
-      transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
-      outline: none;
+    .totais{
+      display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;
+      font-size:.95rem;color:var(--text-dim)
     }
-    .card:hover { transform: translateY(-2px); box-shadow: 0 14px 30px rgba(0,0,0,.45); }
-    .card.selected { border-color: var(--selected); box-shadow: 0 16px 34px rgba(37,99,235,.25); }
+    .pill{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:8px 12px;background:rgba(255,255,255,.05)}
+    .pill .dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+    .dot.time{background:#ffa07a}.dot.value{background:#7fd3a5}.dot.count{background:#8fb6ff}
 
-    .card-header h3 { margin: 0; font-size: 1.15rem; line-height: 1.3; }
-    .subtitle { margin: .25rem 0 0; color: var(--accent-2); font-weight: 600; }
-    .desc { margin: .75rem 0 1rem; color: var(--muted); }
-    .meta { display: flex; justify-content: space-between; gap: .75rem; margin-top: auto; padding-top: .5rem; }
-    .badge { display: inline-flex; align-items: center; gap: .35rem; background: #0b1324; border: 1px solid #243246; padding: .35rem .6rem; border-radius: 12px; font-weight: 600; }
-    .duration::before { content: "⏱"; }
-    .price::before { content: "💰"; }
+    main .wrap{padding-top:24px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px}
 
-    .select-indicator { position: absolute; top: .75rem; right: .75rem; display: none; }
-    .card.selected .select-indicator { display: inline-flex; }
-    .check { width: 26px; height: 26px; display: inline-grid; place-items: center; border-radius: 50%; background: var(--selected); box-shadow: 0 0 0 2px rgba(255,255,255,.2) inset; }
+    /* ===== CARD (correções) ===== */
+    article.card{
+      position:relative;overflow:hidden;border-radius:18px;border:1px solid var(--card-outline);
+      background:linear-gradient(180deg,var(--card-top),var(--card-bottom));box-shadow:var(--shadow);
+      min-height:400px; /* vertical */
+      transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease, background .2s ease;
+      cursor:pointer;
 
-    /* Acessibilidade visual ao focar com teclado */
-    .card:focus { border-color: #60a5fa; box-shadow: 0 0 0 3px rgba(96,165,250,.35); }
+      /* layout robusto: topo (espaçador), corpo (flex), rodapé */
+      display:flex;flex-direction:column;
+    }
+    article.card:hover{transform:translateY(-2px);box-shadow:0 14px 24px rgba(0,0,0,.45)}
 
-    footer { max-width: var(--maxw); margin: 3rem auto 2rem; padding: 0 1.25rem; color: var(--muted); font-size: .9rem; }
-    footer code { background: #0b1324; border: 1px solid #243246; padding: .15rem .35rem; border-radius: 6px; }
+    /* faixa decorativa superior */
+    .decor{
+      position:relative;z-index:0;height:55px; /* controle exato da altura do topo */
+      background:
+        radial-gradient(400px 120px at 85% 0%, rgba(255,255,255,.18), rgba(255,255,255,0) 42%),
+        linear-gradient(135deg, rgba(255,255,255,.12), rgba(255,255,255,.02));
+      border-bottom:1px solid rgba(255,255,255,.06);
+    }
+
+    /* badge de minutos */
+    .badge{
+      position:absolute;top:12px;left:12px;z-index:2;
+      background:linear-gradient(180deg,var(--badge),var(--badge-dark));
+      color:#fff;font-weight:700;font-size:.78rem;letter-spacing:.6px;
+      padding:6px 10px;border-radius:9px;box-shadow:0 6px 10px rgba(0,0,0,.35);
+    }
+
+    /* bloco de títulos, imediatamente após a faixa decorativa */
+    .titles{
+      position:relative;z-index:1;padding:0 16px;margin-top:8px; /* garante área abaixo do topo */
+    }
+    .titulo{font-size:1.35rem;margin:0 0 6px;line-height:1.2;font-weight:800}
+    .subtitulo{margin:0;font-size:.92rem;font-weight:800;letter-spacing:.3px;color:var(--text-dim);text-transform:uppercase}
+
+    /* área de descrição — começa “um pouco antes do meio” do card */
+    .content{
+      position:relative;z-index:1;flex:1; /* ocupa espaço até o rodapé */
+      padding:0 16px;margin-top:22px; /* empurra para baixo (ajuste fino) */
+      display:block;
+    }
+    .descricao{margin:0;font-size:.95rem;color:var(--text-dim);line-height:1.45}
+
+    /* rodapé: preço texto simples, canto inferior direito */
+    .footer{
+      position:relative;min-height:56px; /* reserva o rodapé */
+    }
+    .price{
+      position:absolute;right:16px;bottom:12px;
+      font-size:.95rem;font-weight:400;color:#e7f3ff; /* sem bold, sem caixa */
+    }
+
+    /* estado selecionado */
+    .card.selected{border-color:var(--sel-border);background:linear-gradient(180deg,var(--sel-top),var(--sel-bottom))}
+    .card.selected::after{
+      content:"Selecionada";position:absolute;right:12px;top:12px;z-index:2;
+      font-size:.75rem;color:#0f2b1c;background:linear-gradient(180deg,#78e6af,#4bcf8e);
+      padding:6px 10px;border-radius:999px;box-shadow:0 6px 10px rgba(0,0,0,.35);
+    }
+
+    
+/* Impressão (mantém configuração + ajustes de tipografia e espaçamento) */
+@media print{
+  /* Oculta UI da tela e mostra apenas o documento */
+  header, .grid, .btn, .totais, .only-screen { display: none !important; }
+  .print-root { display: block !important; }
+
+  /* Página A4 e fonte padrão da impressão */
+  @page { size: A4; margin: 20mm; }
+  html, body {
+    background: #fff !important;
+    color: #000 !important;
+    print-color-adjust: economy;
+    -webkit-print-color-adjust: economy;
+    font-family: "Segoe UI", Arial, "Noto Sans", sans-serif;
+  }
+
+  .doc { color: #000; }
+  .doc h1 { font-size: 18pt; font-weight: 700; margin-bottom: 2mm; }
+  .doc .muted { color: #000; opacity: .9; }
+  .doc .line { border-top: 1px solid #000; margin: 4mm 0; }
+  .doc .head { display: grid; grid-template-columns: 1fr auto; gap: 8mm; align-items: start; }
+  .doc .list { margin-top: 6mm; }
+
+  /* Linhas dos itens: descrição | tempo | valor */
+  .doc .row {
+    display: grid;
+    grid-template-columns: 1fr 28mm 32mm;
+    gap: 6mm;
+    padding: 3mm 0;
+    border-bottom: 1px dashed #000;
+    break-inside: avoid;
+  }
+
+  /* >>> AJUSTES SOLICITADOS <<< */
+  /* Título da palestra maior e com melhor leitura */
+  .doc .row .tt {
+    font-size: 12.5pt;       /* maior que o original */
+    font-weight: 700;
+    line-height: 1.25;
+  }
+
+  /* Subtítulo levemente separado do título */
+  .doc .row .st {
+    font-size: 11pt;       /* ligeiro ajuste */
+    text-transform: uppercase;  /* subtítulo em maiúsculo
+    opacity: .9;             /* um pouco mais escuro */
+    margin-top: 1.5mm;       /* separação do título */
+    line-height: 1.25;
+  }
+
+  /* Descrição mais afastada do subtítulo */
+  .doc .row .desc {
+    font-size: 10.5pt;       /* levemente maior para leitura */
+    margin-top: 3.5mm;       /* separação visível do subtítulo */
+    line-height: 1.45;       /* melhora fluxo do parágrafo */
+  }
+
+  /* Colunas de tempo e valor (mantidas) */
+  .doc .row .tempo, .doc .row .valor {
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  /* Totais e bloco final (mantidos) */
+  .doc .totais {
+    margin-top: 6mm;
+    padding-top: 4mm;
+    border-top: 1px solid #000;
+    display: grid;
+    grid-template-columns: 1fr auto;
+  }
+  .doc .final {
+    margin-top: 6mm;
+    padding-top: 4mm;
+    border-top: 1px solid #000;
+    font-size: 11pt;
+  }
+}
+
+
+    /* Botões */
+    .btn{
+      appearance:none;border:1px solid rgba(255,255,255,.18);color:var(--text);
+      background:rgba(255,255,255,.06);padding:10px 12px;border-radius:12px;
+      font-weight:600;cursor:pointer;transition:background .15s ease,border-color .15s ease;
+    }
+    .btn:hover{background:rgba(255,255,255,.12)}
+    .btn.print{border-color:rgba(255,255,255,.28);background:rgba(255,255,255,.09)}
+    .btn.all{border-color:rgba(139,182,255,.45)}
+    .btn.clear{border-color:rgba(255,128,128,.45)}
   </style>
 </head>
 <body>
-  <div class="toolbar">
-    <div class="inner">
-      <div class="totals">
-        <span class="pill"><span class="label">Selecionados</span> <span class="value" data-selected-count>0</span></span>
-        <span class="pill"><span class="label">Tempo total</span> <span class="value" data-total-time>0min</span></span>
-        <span class="pill"><span class="label">Valor total</span> <span class="value" data-total-price>R$ 0,00</span></span>
+  <header>
+    <div class="wrap">
+      <div class="title">
+        <h1>PARALABS</h1>
+        <div class="top-actions only-screen">
+          <button id="btnSelectAll" class="btn all" type="button">Selecionar todas</button>
+          <button id="btnClear" class="btn clear" type="button">Limpar seleções</button>
+          <button id="btnPrint" class="btn print" type="button">Imprimir prévia de orçamento</button>
+        </div>
       </div>
-      <div>
-        <button id="clear">Limpar seleção</button>
+      <div class="totais">
+        <div class="pill"><span class="dot count"></span><span id="count">0 selecionadas</span></div>
+        <div class="pill"><span class="dot time"></span><span id="totalTempo">Tempo total: 0min</span></div>
+        <div class="pill"><span class="dot value"></span><span id="totalValor">Valor total: R$ 0,00</span></div>
       </div>
     </div>
-  </div>
+  </header>
 
-  <div class="app">
-    <header>
-      <h1>Catálogo de Palestras</h1>
-      <p style="color: var(--muted)">Clique ou pressione <strong>Enter</strong>/<strong>Espaço</strong> em um card para selecioná-lo. A barra no topo soma a <em>duração</em> e o <em>preço</em> dos cards selecionados.</p>
-    </header>
+  <main>
+    <div class="wrap">
+      <section class="grid" id="cards" aria-live="polite"></section>
 
-    <!-- ⚠️ EDITE A LISTA DE PALESTRAS NESTE BLOCO JSON -->
-    <script id="card-data" type="application/json">
-    [
-      {
-        "titulo": "Justiça Restaurativa na Prática",
-        "subtitulo": "Casos, resultados e desafios",
-        "descricao": "Panorama prático de iniciativas de Justiça Restaurativa em MP estaduais, com foco em resultados mensuráveis e indicadores de sucesso.",
-        "duracaoMin": 90,
-        "preco": 120
-      },
-      {
-        "titulo": "Direito Visual aplicado a peças processuais",
-        "subtitulo": "Técnicas e padrões",
-        "descricao": "Como aplicar princípios de Direito Visual para tornar documentos jurídicos mais claros, acessíveis e persuasivos.",
-        "duracaoMin": 75,
-        "preco": 100
-      },
-      {
-        "titulo": "Autocomposição e Acordos Estruturais",
-        "subtitulo": "Soluções dialogadas",
-        "descricao": "Ferramentas para implementar práticas de autocomposição, com estudos de caso e fluxos procedimentais.",
-        "duracaoMin": 80,
-        "preco": 110
-      },
-      {
-        "titulo": "Proteção de Dados (LGPD) no MP",
-        "subtitulo": "Bases legais e boas práticas",
-        "descricao": "Fundamentos da LGPD, gestão de consentimento e segurança da informação em órgãos públicos.",
-        "duracaoMin": 60,
-        "preco": 90
-      },
-      {
-        "titulo": "Investigação Digital e Cadeia de Custódia",
-        "subtitulo": "Fundamentos e ferramentas",
-        "descricao": "Boas práticas de coleta, preservação e análise de evidências digitais.",
-        "duracaoMin": 120,
-        "preco": 180
-      },
-      {
-        "titulo": "Comunicação Institucional Eficiente",
-        "subtitulo": "Identidade visual e clareza",
-        "descricao": "Alinhamento da comunicação ao design institucional, padronização de elementos visuais e linguagem cidadã.",
-        "duracaoMin": 50,
-        "preco": 80
-      }
-    ]
-    </script>
-
-    <section class="grid" id="cardGrid" aria-label="Lista de palestras"></section>
-  </div>
-
-  <footer>
-    <p>ℹ️ Para editar, altere o bloco <code>&lt;script id="card-data" type="application/json"&gt;</code> acima.
-    Use <code>duracaoMin</code> em minutos e <code>preco</code> em reais (apenas número).</p>
-  </footer>
+      <!-- Área de impressão -->
+      <section class="print-root" style="display:none">
+        <div id="printDoc" class="doc"></div>
+      </section>
+    </div>
+  </main>
 
   <script>
-  (function(){
-    const dataEl = document.getElementById('card-data');
-    /** Lê a lista de palestras do bloco JSON facilmente editável */
-    const palestras = JSON.parse((dataEl.textContent || '').trim() || '[]');
+    document.addEventListener('DOMContentLoaded', () => {
+      /* Tabela de dados (edite à vontade) */
+      const PALESTRAS = [
+        { titulo:'Repensando Punição', subtitulo:'O estranho conceito de não punir na navegação',
+          descricao:'Como a indústria da aviação prioriza resolver o problema ao invés de punir para que o processo de aprendizagem aumente drasticamente a segurança.',
+          tempo:15, valor:450 },
+        { titulo:'O Básico sobre Direito Visual', subtitulo:'Documentos agradáveis',
+          descricao:'Regras essenciais para criar documentos fáceis de serem lidos e fáceis de o leitor encontrar o que precisa.',
+          tempo:45, valor:1200 },
+        { titulo:'Suporte Incondicional', subtitulo:'',
+          descricao:'A importância de uma pessoa chave para fazer as atividades do dia fluírem e a organização ver os resultados.',
+          tempo:15, valor:350 },
+        { titulo:'Inovação Além da Tecnologia', subtitulo:'',
+          descricao:'Exemplos de inovações em áreas além da TI para repensar com mais impacto o trabalho. Inovação na Administração.',
+          tempo:25, valor:600 },
+        { titulo:'Qual Projeto Tocar Pra Frente?', subtitulo:'Escolhendo em grupo',
+          descricao:'Design thinking simples para escolher em grupo e promover o projeto ideal a ser executado.',
+          tempo:30, valor:700 },
+        { titulo:'O Básico sobre Linguagem Simples', subtitulo:'Fácil de entender',
+          descricao:'Como converter textos complexos para serem compreendidos facilmente.',
+          tempo:20, valor:400 },
+        { titulo:'Do Lab Para o Mundo', subtitulo:'',
+          descricao:'Os típicos problemas de quando um projeto experimental precisa operar por grande quantidade de pessoas.',
+          tempo:30, valor:900 },
+        { titulo:'Tem Que Ter Um Chato', subtitulo:'Montando um bom time',
+          descricao:'A importância de trazer pessoas com diversidade de pensamento e visão para o time. Mais do que alinhamento na missão, o essencial.',
+          tempo:20, valor:500 }
+      ];
 
-    const grid = document.getElementById('cardGrid');
-    const currencyBRL = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
+      const cardsEl = document.getElementById('cards');
+      const btnPrint = document.getElementById('btnPrint');
+      const btnSelectAll = document.getElementById('btnSelectAll');
+      const btnClear = document.getElementById('btnClear');
+      const printDoc = document.getElementById('printDoc');
 
-    function formatDuration(min){
-      const h = Math.floor(min/60), m = min % 60;
-      let out = '';
-      if(h>0) out += `${h}h`;
-      if(m>0) out += (h>0? ' ' : '') + `${m}min`;
-      return out || '0min';
-    }
+      const sel = new Set();
+      const countEl = document.getElementById('count');
+      const totalTempoEl = document.getElementById('totalTempo');
+      const totalValorEl = document.getElementById('totalValor');
 
-    function render(){
-      grid.innerHTML = '';
-      palestras.forEach((p, idx) => {
-        const card = document.createElement('article');
-        card.className = 'card';
-        card.tabIndex = 0;
-        card.setAttribute('role', 'checkbox');
-        card.setAttribute('aria-checked', 'false');
+      const fmtBRL = v => Number(v).toLocaleString('pt-BR', {style:'currency',currency:'BRL'});
+      const hojeBR = () => new Date().toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric'});
+      const fmtTempo = mins => {
+        const h = Math.floor(mins/60), m = mins%60;
+        return h>0 ? `${h}h ${m}min` : `${m}min`;
+      };
 
-        card.dataset.index = String(idx);
-        card.dataset.selected = 'false';
-        card.dataset.duracaoMin = String(Number(p.duracaoMin || 0));
-        card.dataset.preco = String(Number(p.preco || 0));
+      function atualizarTotais(){
+        let tempo=0, valor=0;
+        for(const i of sel){ tempo+=PALESTRAS[i].tempo; valor+=PALESTRAS[i].valor; }
+        countEl.textContent = `${sel.size} selecionadas`;
+        totalTempoEl.textContent = `Tempo total: ${fmtTempo(tempo)}`;
+        totalValorEl.textContent = `Valor total: ${fmtBRL(valor)}`;
+      }
 
-        card.innerHTML = `
-          <div class="card-header">
-            <h3>${p.titulo || 'Sem título'}</h3>
-            <p class="subtitle">${p.subtitulo || ''}</p>
+      function criarCard(p,i){
+        const art = document.createElement('article');
+        art.className = 'card';
+        art.dataset.index = i;
+        art.innerHTML = `
+          <div class="decor"></div>
+          <span class="badge"><strong>${p.tempo}</strong> <small>MIN</small></span>
+          <div class="titles">
+            <h3 class="titulo">${p.titulo}</h3>
+            ${p.subtitulo ? `<p class="subtitulo">${p.subtitulo}</p>` : ''}
           </div>
-          <p class="desc">${p.descricao || ''}</p>
-          <div class="meta">
-            <span class="badge duration" title="Duração">${formatDuration(Number(p.duracaoMin || 0))}</span>
-            <span class="badge price" title="Preço">${currencyBRL.format(Number(p.preco || 0))}</span>
+          <div class="content">
+            <p class="descricao">${p.descricao}</p>
           </div>
-          <div class="select-indicator" aria-hidden="true">
-            <span class="check">✓</span>
+          <div class="footer">
+            <span class="price">${fmtBRL(p.valor)}</span>
+          </div>`;
+        art.addEventListener('click', () => toggleSelecao(i, art));
+        return art;
+      }
+
+      function toggleSelecao(i, art){
+        if(sel.has(i)){ sel.delete(i); art.classList.remove('selected'); }
+        else{ sel.add(i); art.classList.add('selected'); }
+        atualizarTotais();
+      }
+
+      function render(){
+        const frag = document.createDocumentFragment();
+        PALESTRAS.forEach((p,i)=>frag.appendChild(criarCard(p,i)));
+        cardsEl.innerHTML='';
+        cardsEl.appendChild(frag);
+        atualizarTotais();
+      }
+
+      function selecionarTodas(){
+        sel.clear();
+        [...cardsEl.querySelectorAll('.card')].forEach((card,i)=>{ sel.add(i); card.classList.add('selected'); });
+        atualizarTotais();
+      }
+      function limparSelecoes(){
+        sel.clear();
+        [...cardsEl.querySelectorAll('.card')].forEach(card=>card.classList.remove('selected'));
+        atualizarTotais();
+      }
+
+      function montarDocumentoDeImpressao(){
+        const itens = Array.from(sel).map(i=>PALESTRAS[i]);
+        const totalMinutos = itens.reduce((acc,p)=>acc+p.tempo,0);
+        const totalValor   = itens.reduce((acc,p)=>acc+p.valor,0);
+
+        const linhas = itens.map(p=>`
+          <div class="row">
+            <div>
+              <div class="tt">${p.titulo}</div>
+              ${p.subtitulo?`<div class="st">${p.subtitulo}</div>`:''}
+              ${p.descricao?`<div class="desc">${p.descricao}</div>`:''}
+            </div>
+            <div class="tempo">${fmtTempo(p.tempo)}</div>
+            <div class="valor">${fmtBRL(p.valor)}</div>
+          </div>`).join('');
+
+        printDoc.innerHTML = `
+          <div class="head">
+            <div>
+              <h1>PARALABS - Orçamento prévio</h1>
+              <div class="muted">Previsão de orçamento. Por gentileza, entre em contato com paralabs@paralabs.com.br para proposta comercial completa.</div>
+            </div>
+            <div class="meta">
+              <div><strong>Data:</strong> ${hojeBR()}</div>
+              <div><strong>Itens:</strong> ${itens.length}</div>
+            </div>
           </div>
-        `;
+          <div class="line"></div>
+          ${itens.length ? `<div class="list">${linhas}</div>` : `<div class="list"><em class="muted">Nenhuma palestra selecionada.</em></div>`}
+          <div class="totais">
+            <div class="lbl">Totais</div>
+            <div class="nums">
+              <div><strong>Tempo total:</strong> ${fmtTempo(totalMinutos)}</div>
+              <div><strong>Valor total:</strong> ${fmtBRL(totalValor)}</div>
+            </div>
+          </div>
+          <div class="final">
+            <div><strong>Duração total:</strong> ${fmtTempo(totalMinutos)}</div>
+            <div><strong>Valor total:</strong> ${fmtBRL(totalValor)}</div>
+          </div>
+          <div class="rodape"><div>Documento gerado automaticamente a partir da seleção realizada.</div></div>`;
+      }
 
-        function toggle(){
-          const isSelected = card.dataset.selected === 'true';
-          card.dataset.selected = String(!isSelected);
-          card.setAttribute('aria-checked', String(!isSelected));
-          card.classList.toggle('selected', !isSelected);
-          updateTotals();
-        }
-        card.addEventListener('click', toggle);
-        card.addEventListener('keydown', (e) => {
-          if(e.key === ' ' || e.key === 'Enter') { e.preventDefault(); toggle(); }
-        });
+      btnSelectAll.addEventListener('click', selecionarTodas);
+      btnClear.addEventListener('click', limparSelecoes);
+      btnPrint.addEventListener('click', ()=>{ montarDocumentoDeImpressao(); window.print(); });
 
-        grid.appendChild(card);
-      });
-    }
-
-    function updateTotals(){
-      const selected = Array.from(grid.querySelectorAll('.card.selected'));
-      const totalMin = selected.reduce((sum, el) => sum + Number(el.dataset.duracaoMin || 0), 0);
-      const totalPrice = selected.reduce((sum, el) => sum + Number(el.dataset.preco || 0), 0);
-      document.querySelector('[data-selected-count]').textContent = String(selected.length);
-      document.querySelector('[data-total-time]').textContent = formatDuration(totalMin);
-      document.querySelector('[data-total-price]').textContent = currencyBRL.format(totalPrice);
-    }
-
-    document.getElementById('clear').addEventListener('click', () => {
-      grid.querySelectorAll('.card.selected').forEach(el => {
-        el.dataset.selected = 'false';
-        el.setAttribute('aria-checked', 'false');
-        el.classList.remove('selected');
-      });
-      updateTotals();
+      render();
     });
-
-    render();
-    updateTotals();
-  })();
   </script>
 </body>
 </html>
