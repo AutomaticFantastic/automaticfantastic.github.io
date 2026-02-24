@@ -114,86 +114,84 @@
       padding:6px 10px;border-radius:999px;box-shadow:0 6px 10px rgba(0,0,0,.35);
     }
 
-    
-/* Impressão (mantém configuração + ajustes de tipografia e espaçamento) */
-@media print{
-  /* Oculta UI da tela e mostra apenas o documento */
-  header, .grid, .btn, .totais, .only-screen { display: none !important; }
-  .print-root { display: block !important; }
+    /* Impressão (mantém configuração + ajustes de tipografia e espaçamento) */
+    @media print{
+      /* Oculta UI da tela e mostra apenas o documento */
+      header, .grid, .btn, .totais, .only-screen { display: none !important; }
+      .print-root { display: block !important; }
 
-  /* Página A4 e fonte padrão da impressão */
-  @page { size: A4; margin: 20mm; }
-  html, body {
-    background: #fff !important;
-    color: #000 !important;
-    print-color-adjust: economy;
-    -webkit-print-color-adjust: economy;
-    font-family: "Segoe UI", Arial, "Noto Sans", sans-serif;
-  }
+      /* Página A4 e fonte padrão da impressão */
+      @page { size: A4; margin: 20mm; }
+      html, body {
+        background: #fff !important;
+        color: #000 !important;
+        print-color-adjust: economy;
+        -webkit-print-color-adjust: economy;
+        font-family: "Segoe UI", Arial, "Noto Sans", sans-serif;
+      }
 
-  .doc { color: #000; }
-  .doc h1 { font-size: 18pt; font-weight: 700; margin-bottom: 2mm; }
-  .doc .muted { color: #000; opacity: .9; }
-  .doc .line { border-top: 1px solid #000; margin: 4mm 0; }
-  .doc .head { display: grid; grid-template-columns: 1fr auto; gap: 8mm; align-items: start; }
-  .doc .list { margin-top: 6mm; }
+      .doc { color: #000; }
+      .doc h1 { font-size: 18pt; font-weight: 700; margin-bottom: 2mm; }
+      .doc .muted { color: #000; opacity: .9; }
+      .doc .line { border-top: 1px solid #000; margin: 4mm 0; }
+      .doc .head { display: grid; grid-template-columns: 1fr auto; gap: 8mm; align-items: start; }
+      .doc .list { margin-top: 6mm; }
 
-  /* Linhas dos itens: descrição | tempo | valor */
-  .doc .row {
-    display: grid;
-    grid-template-columns: 1fr 28mm 32mm;
-    gap: 6mm;
-    padding: 3mm 0;
-    border-bottom: 1px dashed #000;
-    break-inside: avoid;
-  }
+      /* Linhas dos itens: descrição | tempo | valor */
+      .doc .row {
+        display: grid;
+        grid-template-columns: 1fr 28mm 32mm;
+        gap: 6mm;
+        padding: 3mm 0;
+        border-bottom: 1px dashed #000;
+        break-inside: avoid;
+      }
 
-  /* >>> AJUSTES SOLICITADOS <<< */
-  /* Título da palestra maior e com melhor leitura */
-  .doc .row .tt {
-    font-size: 12.5pt;       /* maior que o original */
-    font-weight: 700;
-    line-height: 1.25;
-  }
+      /* >>> AJUSTES SOLICITADOS <<< */
+      /* Título da palestra maior e com melhor leitura */
+      .doc .row .tt {
+        font-size: 12.5pt;       /* maior que o original */
+        font-weight: 700;
+        line-height: 1.25;
+      }
 
-  /* Subtítulo levemente separado do título */
-  .doc .row .st {
-    font-size: 11pt;       /* ligeiro ajuste */
-    text-transform: uppercase;  /* subtítulo em maiúsculo
-    opacity: .9;             /* um pouco mais escuro */
-    margin-top: 1.5mm;       /* separação do título */
-    line-height: 1.25;
-  }
+      /* Subtítulo levemente separado do título */
+      .doc .row .st {
+        font-size: 11pt;              /* ligeiro ajuste */
+        text-transform: uppercase;     /* subtítulo em maiúsculo */
+        opacity: .9;                  /* um pouco mais escuro */
+        margin-top: 1.5mm;            /* separação do título */
+        line-height: 1.25;
+      }
 
-  /* Descrição mais afastada do subtítulo */
-  .doc .row .desc {
-    font-size: 10.5pt;       /* levemente maior para leitura */
-    margin-top: 3.5mm;       /* separação visível do subtítulo */
-    line-height: 1.45;       /* melhora fluxo do parágrafo */
-  }
+      /* Descrição mais afastada do subtítulo */
+      .doc .row .desc {
+        font-size: 10.5pt;       /* levemente maior para leitura */
+        margin-top: 3.5mm;       /* separação visível do subtítulo */
+        line-height: 1.45;       /* melhora fluxo do parágrafo */
+      }
 
-  /* Colunas de tempo e valor (mantidas) */
-  .doc .row .tempo, .doc .row .valor {
-    text-align: right;
-    white-space: nowrap;
-  }
+      /* Colunas de tempo e valor (mantidas) */
+      .doc .row .tempo, .doc .row .valor {
+        text-align: right;
+        white-space: nowrap;
+      }
 
-  /* Totais e bloco final (mantidos) */
-  .doc .totais {
-    margin-top: 6mm;
-    padding-top: 4mm;
-    border-top: 1px solid #000;
-    display: grid;
-    grid-template-columns: 1fr auto;
-  }
-  .doc .final {
-    margin-top: 6mm;
-    padding-top: 4mm;
-    border-top: 1px solid #000;
-    font-size: 11pt;
-  }
-}
-
+      /* Totais e bloco final (mantidos) */
+      .doc .totais {
+        margin-top: 6mm;
+        padding-top: 4mm;
+        border-top: 1px solid #000;
+        display: grid;
+        grid-template-columns: 1fr auto;
+      }
+      .doc .final {
+        margin-top: 6mm;
+        padding-top: 4mm;
+        border-top: 1px solid #000;
+        font-size: 11pt;
+      }
+    }
 
     /* Botões */
     .btn{
@@ -205,6 +203,86 @@
     .btn.print{border-color:rgba(255,255,255,.28);background:rgba(255,255,255,.09)}
     .btn.all{border-color:rgba(139,182,255,.45)}
     .btn.clear{border-color:rgba(255,128,128,.45)}
+
+    /* ===== NOVO: botão invisível (mas clicável) encostado à direita ===== */
+    .btn-invisivel{
+      
+  position:absolute;
+  right:0;
+  top:0;
+        
+      width:28px;
+      height:40px;
+      padding:0;
+      opacity:0;                  /* invisível */
+      background:transparent;
+      border-color:transparent;
+      pointer-events:auto;        /* garante clique */
+    }
+
+    /* ===== NOVO: modal simples para texto (copy) ===== */
+    .modal-backdrop{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.55);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:10000;
+      padding:18px;
+    }
+    .modal-backdrop.open{ display:flex; }
+
+    .modal-box{
+      width:min(980px, 96vw);
+      max-height:88vh;
+      overflow:hidden;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.18);
+      background:rgba(16,25,44,.96);
+      box-shadow:0 18px 40px rgba(0,0,0,.55);
+    }
+
+    .modal-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding:12px 14px;
+      border-bottom:1px solid rgba(255,255,255,.10);
+    }
+    .modal-head .modal-title{
+      font-weight:700;
+      font-size:.95rem;
+      color:var(--text);
+    }
+    .modal-close{
+      appearance:none;
+      border:1px solid rgba(255,255,255,.18);
+      background:rgba(255,255,255,.06);
+      color:var(--text);
+      border-radius:10px;
+      padding:8px 10px;
+      cursor:pointer;
+    }
+    .modal-close:hover{ background:rgba(255,255,255,.12); }
+
+    .modal-body{
+      padding:12px 14px;
+    }
+    .modal-textarea{
+      width:100%;
+      height:62vh;
+      resize:vertical;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.22);
+      color:var(--text);
+      padding:12px;
+      font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size:.95rem;
+      line-height:1.45;
+    }
   </style>
 </head>
 <body>
@@ -216,8 +294,12 @@
           <button id="btnSelectAll" class="btn all" type="button">Selecionar todas</button>
           <button id="btnClear" class="btn clear" type="button">Limpar seleções</button>
           <button id="btnPrint" class="btn print" type="button">Imprimir prévia de orçamento</button>
+
+          <!-- ===== NOVO: botão invisível (mas clicável) ===== -->
+          <button id="btnTextoModal" class="btn btn-invisivel" type="button" aria-label="Gerar texto simples para copiar"></button>
         </div>
       </div>
+
       <div class="totais">
         <div class="pill"><span class="dot count"></span><span id="count">0 selecionadas</span></div>
         <div class="pill"><span class="dot time"></span><span id="totalTempo">Tempo total: 0min</span></div>
@@ -240,254 +322,54 @@
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       /* Tabela de dados (edite à vontade) */
-
-const PALESTRAS = [
-  {
-    "titulo": "Quebrando regras:",
-    "subtitulo": "Além do sandbox",
-    "descricao": "O que é um sandbox no governo, a importância de quebrar regras e exemplos de boas quebradas de regra.",
-    "tempo": 30,
-    "valor": 600
-  },
-  {
-    "titulo": "Situação da IA:",
-    "subtitulo": "Um reality check",
-    "descricao": "Um relato sobre a situação atual da tecnologia. Mostro o lado bom e ruim, o que é hype e o que é realidade. Faço um exercício de futurismo para o órgão guiar suas aquisições.",
-    "tempo": 45,
-    "valor": 900
-  },
-  {
-    "titulo": "Pra que um lab?",
-    "subtitulo": "",
-    "descricao": "Os bons motivos para uma instituição ter um laboratório de inovação e o propósito de sua existência.",
-    "tempo": 20,
-    "valor": 400
-  },
-  {
-    "titulo": "Qual Projeto Tocar Pra Frente?",
-    "subtitulo": "Escolhendo em grupo",
-    "descricao": "Apresento um método simples para um grupo decidir em conjunto qual projeto deve ser executado. Muito útil para comitês e grupos chegarem a uma decisão.",
-    "tempo": 30,
-    "valor": 600
-  },
-  {
-    "titulo": "Do lab para o mundo:",
-    "subtitulo": "E agora?",
-    "descricao": "Os problemas típicos de escalonamento de projetos do laboratório e como preparar seu experimento para possível uso por um grande número de pessoas.",
-    "tempo": 30,
-    "valor": 600
-  },
-  {
-    "titulo": "De mãos dadas com a segurança",
-    "subtitulo": "Evitando problemas futuros",
-    "descricao": "Mostro a importância de iniciar projetos experimentais já considerando a segurança.",
-    "tempo": 20,
-    "valor": 400
-  },
-  {
-    "titulo": "Sem querer querendo:",
-    "subtitulo": "Quando o beta vira oficial sem querer",
-    "descricao": "Histórias de experimentos e softwares em fase de teste que acabaram sendo amplamente usados pelo público sem lançamento oficial.",
-    "tempo": 15,
-    "valor": 300
-  },
-  {
-    "titulo": "Repensando punição:",
-    "subtitulo": "O estranho conceito de não punir na aviação",
-    "descricao": "Como a aviação tornou-se extremamente segura ao priorizar a investigação de problemas em vez da punição de pessoas.",
-    "tempo": 15,
-    "valor": 300
-  },
-  {
-    "titulo": "Questionando tudo",
-    "subtitulo": "A importância de repensar atividades administrativas",
-    "descricao": "A importância de repensar a existência de antigas atividades administrativas e como preparar a mente para reprogramar fluxos de trabalho.",
-    "tempo": 20,
-    "valor": 400
-  },
-  {
-    "titulo": "Medo de inovar é normal",
-    "subtitulo": "",
-    "descricao": "Histórico de como a cultura da burocracia fez os órgãos terem medo de inovar. Explico o processo mental que faz administradores e servidores evitarem inovações.",
-    "tempo": 30,
-    "valor": 600
-  },
-  {
-    "titulo": "A regra é não ter regras",
-    "subtitulo": "O método Netflix",
-    "descricao": "O estilo completamente diferente de administrar da Netflix, que usa contexto em vez de burocracia. Mostro como gerenciar usando contexto e como esse método pode ser adaptado para uso no governo.",
-    "tempo": 60,
-    "valor": 1200
-  },
-  {
-    "titulo": "Como definir um lab legalmente",
-    "subtitulo": "",
-    "descricao": "Exemplos de atos e leis para definir claramente um laboratório de inovação no seu órgão.",
-    "tempo": 30,
-    "valor": 600
-  },
-  {
-    "titulo": "O básico do Design Thinking",
-    "subtitulo": "",
-    "descricao": "Exemplos de canvas simples e úteis para que a equipe visualize claramente o que se deseja resolver.",
-    "tempo": 60,
-    "valor": 1200
-  },
-  {
-    "titulo": "O básico sobre Linguagem Simples",
-    "subtitulo": "Fácil de entender",
-    "descricao": "Como converter textos complexos para que sejam facilmente compreendidos por qualquer pessoa.",
-    "tempo": 60,
-    "valor": 1200
-  },
-  {
-    "titulo": "Criando notícias sobre o lab",
-    "subtitulo": "",
-    "descricao": "Exemplos de como divulgar positivamente os trabalhos do laboratório de inovação e como registrar o histórico do laboratório.",
-    "tempo": 25,
-    "valor": 500
-  },
-  {
-    "titulo": "Ferramenta Canva.com",
-    "subtitulo": "",
-    "descricao": "Demonstração do que a ferramenta de design online Canva pode fazer pela sua equipe.",
-    "tempo": 60,
-    "valor": 1200
-  },
-  {
-    "titulo": "Premiações",
-    "subtitulo": "Para laboratórios e projetos",
-    "descricao": "Como inscrever seus projetos em premiações pelo Brasil.",
-    "tempo": 20,
-    "valor": 400
-  },
-  {
-    "titulo": "Exemplos de experimentos",
-    "subtitulo": "",
-    "descricao": "Exemplos reais de experimentos executados por laboratórios, tanto os que deram certo quanto os que falharam.",
-    "tempo": 60,
-    "valor": 1200
-  },
-  {
-    "titulo": "Falhando rápido",
-    "subtitulo": "E acertando em cheio",
-    "descricao": "Como o conceito de falhar rápido é essencial para experimentos do laboratório.",
-    "tempo": 20,
-    "valor": 400
-  },
-  {
-    "titulo": "Montando uma rede de laboratórios",
-    "subtitulo": "",
-    "descricao": "Como funciona uma rede que reúne laboratórios de inovação de órgãos parceiros e como compartilhar informações. Minha experiência como coordenador do InovaGovSC.",
-    "tempo": 30,
-    "valor": 600
-  },
-  {
-    "titulo": "Inspirações mil",
-    "subtitulo": "",
-    "descricao": "Livros, podcasts, filmes, notícias e muita coisa aleatória para trazer inspiração para o laboratório.",
-    "tempo": 20,
-    "valor": 400
-  },
-  {
-    "titulo": "Todo projeto tem um dono",
-    "subtitulo": "",
-    "descricao": "A importância de pessoas-chave realmente interessadas para que os projetos tenham sucesso.",
-    "tempo": 15,
-    "valor": 300
-  },
-  {
-    "titulo": "Montando eventos de inovação",
-    "subtitulo": "",
-    "descricao": "Dicas para você montar seu próprio evento de inovação que inspirará seu órgão.",
-    "tempo": 30,
-    "valor": 600
-  },
-  {
-    "titulo": "Visitando eventos de inovação",
-    "subtitulo": "",
-    "descricao": "Lista de eventos nacionais importantes para quem trabalha com inovação.",
-    "tempo": 15,
-    "valor": 300
-  },
-  {
-    "titulo": "Testando ferramentas",
-    "subtitulo": "",
-    "descricao": "Como testar novidades tecnológicas de maneira efetiva para possível uso pelo órgão.",
-    "tempo": 25,
-    "valor": 500
-  },
-  {
-    "titulo": "Inovando no pagamento",
-    "subtitulo": "",
-    "descricao": "Ideias diferentes do tradicional quando se fala de pagamentos feitos pelo órgão.",
-    "tempo": 15,
-    "valor": 300
-  },
-  {
-    "titulo": "Como definir qual problema resolver?",
-    "subtitulo": "",
-    "descricao": "Técnica em Design Thinking específica para que o laboratório descubra visualmente qual é o problema real a ser atacado.",
-    "tempo": 60,
-    "valor": 1200
-  },
-  {
-    "titulo": "Complicações no lab!",
-    "subtitulo": "Os problemas que já tivemos",
-    "descricao": "Lista com todos os problemas que já vivenciamos em nossa carreira nos laboratórios de inovação, para sua equipe ficar preparada.",
-    "tempo": 45,
-    "valor": 900
-  },
-  {
-    "titulo": "Montando um time nota 10",
-    "subtitulo": "E tem que incluir um chato",
-    "descricao": "A importância de reunir diferentes personalidades para ter um time nota 10 e como até um membro caxias agrega ao time.",
-    "tempo": 20,
-    "valor": 400
-  },
-  {
-    "titulo": "Inovação Além da Tecnologia",
-    "subtitulo": "",
-    "descricao": "Exemplos de inovações em áreas além da TI e a importância de repensar fluxos de trabalho. Inovação na Administração.",
-    "tempo": 25,
-    "valor": 500
-  },
-  {
-    "titulo": "Suporte Incondicional",
-    "subtitulo": "",
-    "descricao": "A importância de uma pessoa-chave para fazer as atividades do laboratório fluírem e para o órgão ver resultados.",
-    "tempo": 15,
-    "valor": 300
-  },
-  {
-    "titulo": "Horas trabalhadas não gera resultado",
-    "subtitulo": "Acabando com a obsessão por ponto",
-    "descricao": "Uma reflexão sobre a cultura de contar horas trabalhadas, de bater ponto. Como abandonar esse hábito gera mais progresso e alivia o trabalho de chefias e funcionários.",
-    "tempo": 15,
-    "valor": 300
-  },
-  {
-    "titulo": "Comunicação assíncrona",
-    "subtitulo": "Equipe unidada e informada",
-    "descricao": "Como a equipe pode se comunicar em horários diferentes, a importância de uma reunião entre amigos e o essencial painel de projetos.",
-    "tempo": 30,
-    "valor": 600
-  },
-  {
-    "titulo": "O básico sobre Direito Visual",
-    "subtitulo": "Criando documentos agradáveis",
-    "descricao": "Regras essenciais para criar documentos fáceis de serem lidos e para o leitor encontrar o que precisa.",
-    "tempo": 45,
-    "valor": 900
-  }
-];
-
+      const PALESTRAS = [
+        {"titulo":"Quebrando regras:","subtitulo":"Além do sandbox","descricao":"O que é um sandbox no governo, a importância de quebrar regras e exemplos de boas quebradas de regra.","tempo":30,"valor":600},
+        {"titulo":"Situação da IA:","subtitulo":"Um reality check","descricao":"Um relato sobre a situação atual da tecnologia. Mostro o lado bom e ruim, o que é hype e o que é realidade. Faço um exercício de futurismo para o órgão guiar suas aquisições.","tempo":45,"valor":900},
+        {"titulo":"Pra que um lab?","subtitulo":"","descricao":"Os bons motivos para uma instituição ter um laboratório de inovação e o propósito de sua existência.","tempo":20,"valor":400},
+        {"titulo":"Qual Projeto Tocar Pra Frente?","subtitulo":"Escolhendo em grupo","descricao":"Apresento um método simples para um grupo decidir em conjunto qual projeto deve ser executado. Muito útil para comitês e grupos chegarem a uma decisão.","tempo":30,"valor":600},
+        {"titulo":"Do lab para o mundo:","subtitulo":"E agora?","descricao":"Os problemas típicos de escalonamento de projetos do laboratório e como preparar seu experimento para possível uso por um grande número de pessoas.","tempo":30,"valor":600},
+        {"titulo":"De mãos dadas com a segurança","subtitulo":"Evitando problemas futuros","descricao":"Mostro a importância de iniciar projetos experimentais já considerando a segurança.","tempo":20,"valor":400},
+        {"titulo":"Sem querer querendo:","subtitulo":"Quando o beta vira oficial sem querer","descricao":"Histórias de experimentos e softwares em fase de teste que acabaram sendo amplamente usados pelo público sem lançamento oficial.","tempo":15,"valor":300},
+        {"titulo":"Repensando punição:","subtitulo":"O estranho conceito de não punir na aviação","descricao":"Como a aviação tornou-se extremamente segura ao priorizar a investigação de problemas em vez da punição de pessoas.","tempo":15,"valor":300},
+        {"titulo":"Questionando tudo","subtitulo":"A importância de repensar atividades administrativas","descricao":"A importância de repensar a existência de antigas atividades administrativas e como preparar a mente para reprogramar fluxos de trabalho.","tempo":20,"valor":400},
+        {"titulo":"Medo de inovar é normal","subtitulo":"","descricao":"Histórico de como a cultura da burocracia fez os órgãos terem medo de inovar. Explico o processo mental que faz administradores e servidores evitarem inovações.","tempo":30,"valor":600},
+        {"titulo":"A regra é não ter regras","subtitulo":"O método Netflix","descricao":"O estilo completamente diferente de administrar da Netflix, que usa contexto em vez de burocracia. Mostro como gerenciar usando contexto e como esse método pode ser adaptado para uso no governo.","tempo":60,"valor":1200},
+        {"titulo":"Como definir um lab legalmente","subtitulo":"","descricao":"Exemplos de atos e leis para definir claramente um laboratório de inovação no seu órgão.","tempo":30,"valor":600},
+        {"titulo":"O básico do Design Thinking","subtitulo":"","descricao":"Exemplos de canvas simples e úteis para que a equipe visualize claramente o que se deseja resolver.","tempo":60,"valor":1200},
+        {"titulo":"O básico sobre Linguagem Simples","subtitulo":"Fácil de entender","descricao":"Como converter textos complexos para que sejam facilmente compreendidos por qualquer pessoa.","tempo":60,"valor":1200},
+        {"titulo":"Criando notícias sobre o lab","subtitulo":"","descricao":"Exemplos de como divulgar positivamente os trabalhos do laboratório de inovação e como registrar o histórico do laboratório.","tempo":25,"valor":500},
+        {"titulo":"Ferramenta Canva.com","subtitulo":"","descricao":"Demonstração do que a ferramenta de design online Canva pode fazer pela sua equipe.","tempo":60,"valor":1200},
+        {"titulo":"Premiações","subtitulo":"Para laboratórios e projetos","descricao":"Como inscrever seus projetos em premiações pelo Brasil.","tempo":20,"valor":400},
+        {"titulo":"Exemplos de experimentos","subtitulo":"","descricao":"Exemplos reais de experimentos executados por laboratórios, tanto os que deram certo quanto os que falharam.","tempo":60,"valor":1200},
+        {"titulo":"Falhando rápido","subtitulo":"E acertando em cheio","descricao":"Como o conceito de falhar rápido é essencial para experimentos do laboratório.","tempo":20,"valor":400},
+        {"titulo":"Montando uma rede de laboratórios","subtitulo":"","descricao":"Como funciona uma rede que reúne laboratórios de inovação de órgãos parceiros e como compartilhar informações. Minha experiência como coordenador do InovaGovSC.","tempo":30,"valor":600},
+        {"titulo":"Inspirações mil","subtitulo":"","descricao":"Livros, podcasts, filmes, notícias e muita coisa aleatória para trazer inspiração para o laboratório.","tempo":20,"valor":400},
+        {"titulo":"Todo projeto tem um dono","subtitulo":"","descricao":"A importância de pessoas-chave realmente interessadas para que os projetos tenham sucesso.","tempo":15,"valor":300},
+        {"titulo":"Montando eventos de inovação","subtitulo":"","descricao":"Dicas para você montar seu próprio evento de inovação que inspirará seu órgão.","tempo":30,"valor":600},
+        {"titulo":"Visitando eventos de inovação","subtitulo":"","descricao":"Lista de eventos nacionais importantes para quem trabalha com inovação.","tempo":15,"valor":300},
+        {"titulo":"Testando ferramentas","subtitulo":"","descricao":"Como testar novidades tecnológicas de maneira efetiva para possível uso pelo órgão.","tempo":25,"valor":500},
+        {"titulo":"Inovando no pagamento","subtitulo":"","descricao":"Ideias diferentes do tradicional quando se fala de pagamentos feitos pelo órgão.","tempo":15,"valor":300},
+        {"titulo":"Como definir qual problema resolver?","subtitulo":"","descricao":"Técnica em Design Thinking específica para que o laboratório descubra visualmente qual é o problema real a ser atacado.","tempo":60,"valor":1200},
+        {"titulo":"Complicações no lab!","subtitulo":"Os problemas que já tivemos","descricao":"Lista com todos os problemas que já vivenciamos em nossa carreira nos laboratórios de inovação, para sua equipe ficar preparada.","tempo":45,"valor":900},
+        {"titulo":"Montando um time nota 10","subtitulo":"E tem que incluir um chato","descricao":"A importância de reunir diferentes personalidades para ter um time nota 10 e como até um membro caxias agrega ao time.","tempo":20,"valor":400},
+        {"titulo":"Inovação Além da Tecnologia","subtitulo":"","descricao":"Exemplos de inovações em áreas além da TI e a importância de repensar fluxos de trabalho. Inovação na Administração.","tempo":25,"valor":500},
+        {"titulo":"Suporte Incondicional","subtitulo":"","descricao":"A importância de uma pessoa-chave para fazer as atividades do laboratório fluírem e para o órgão ver resultados.","tempo":15,"valor":300},
+        {"titulo":"Horas trabalhadas não gera resultado","subtitulo":"Acabando com a obsessão por ponto","descricao":"Uma reflexão sobre a cultura de contar horas trabalhadas, de bater ponto. Como abandonar esse hábito gera mais progresso e alivia o trabalho de chefias e funcionários.","tempo":15,"valor":300},
+        {"titulo":"Comunicação assíncrona","subtitulo":"Equipe unidada e informada","descricao":"Como a equipe pode se comunicar em horários diferentes, a importância de uma reunião entre amigos e o essencial painel de projetos.","tempo":30,"valor":600},
+        {"titulo":"O básico sobre Direito Visual","subtitulo":"Criando documentos agradáveis","descricao":"Regras essenciais para criar documentos fáceis de serem lidos e para o leitor encontrar o que precisa.","tempo":45,"valor":900}
+      ];
 
       const cardsEl = document.getElementById('cards');
       const btnPrint = document.getElementById('btnPrint');
       const btnSelectAll = document.getElementById('btnSelectAll');
       const btnClear = document.getElementById('btnClear');
       const printDoc = document.getElementById('printDoc');
+
+      // ===== NOVO: botão invisível + modal texto =====
+      const btnTextoModal = document.getElementById('btnTextoModal');
+      const textModal = document.getElementById('textModal');
+      const btnCloseTextModal = document.getElementById('btnCloseTextModal');
+      const textModalContent = document.getElementById('textModalContent');
 
       const sel = new Set();
       const countEl = document.getElementById('count');
@@ -549,6 +431,7 @@ const PALESTRAS = [
         [...cardsEl.querySelectorAll('.card')].forEach((card,i)=>{ sel.add(i); card.classList.add('selected'); });
         atualizarTotais();
       }
+
       function limparSelecoes(){
         sel.clear();
         [...cardsEl.querySelectorAll('.card')].forEach(card=>card.classList.remove('selected'));
@@ -598,12 +481,100 @@ const PALESTRAS = [
           <div class="rodape"><div>Documento gerado automaticamente a partir da seleção realizada.</div></div>`;
       }
 
+      // ===== NOVO: formatação de duração total no estilo "1h15m" =====
+      const fmtDuracaoAprox = (mins) => {
+        const h = Math.floor(mins / 60);
+        const m = mins % 60;
+        if (h <= 0) return `${m}min`;
+        return `${h}h${m > 0 ? `${m}m` : ''}`;
+      };
+
+      // ===== NOVO: gera texto simples para Ctrl+C =====
+      function montarTextoSimplesParaCopia(){
+        const itens = Array.from(sel).map(i => PALESTRAS[i]);
+        const totalMinutos = itens.reduce((acc,p)=>acc+p.tempo,0);
+        const totalValor = itens.reduce((acc,p)=>acc+p.valor,0);
+
+        if(!itens.length){
+          return [
+            "Nenhuma palestra selecionada.",
+            "",
+            "Quantidade de palestras: 0.",
+            "Duração aproximada: 0min.",
+            `Valor total: ${fmtBRL(0)}`
+          ].join("\n");
+        }
+
+        const linhas = itens.map((p, idx) => {
+          const num = idx + 1;
+          const tituloCompleto = (p.subtitulo && p.subtitulo.trim())
+            ? `${p.titulo} ${p.subtitulo}`.trim()
+            : `${p.titulo}`.trim();
+
+          const desc = (p.descricao || "").trim();
+          return `${num}. ${tituloCompleto} - Descrição: ${desc} Tempo aproximado: ${p.tempo}min.`;
+        }).join("\n\n");
+
+        const final = [
+          "",
+          `Quantidade de palestras: ${itens.length}.`,
+          `Duração aproximada: ${fmtDuracaoAprox(totalMinutos)}.`,
+          `Valor total: ${fmtBRL(totalValor)}`
+        ].join("\n");
+
+        return linhas + final;
+      }
+
+      // ===== NOVO: abrir/fechar modal =====
+      function abrirModalTexto(){
+        if(!textModal || !textModalContent) return;
+        textModalContent.value = montarTextoSimplesParaCopia();
+        textModal.classList.add('open');
+        textModalContent.focus();
+        textModalContent.select();
+      }
+
+      function fecharModalTexto(){
+        if(!textModal) return;
+        textModal.classList.remove('open');
+      }
+
+      // Listeners originais
       btnSelectAll.addEventListener('click', selecionarTodas);
       btnClear.addEventListener('click', limparSelecoes);
       btnPrint.addEventListener('click', ()=>{ montarDocumentoDeImpressao(); window.print(); });
 
+      // ===== NOVO: listeners do modal (com proteção para não quebrar a página) =====
+      if (btnTextoModal) btnTextoModal.addEventListener('click', abrirModalTexto);
+      if (btnCloseTextModal) btnCloseTextModal.addEventListener('click', fecharModalTexto);
+
+      if (textModal){
+        // Fecha ao clicar fora da caixa
+        textModal.addEventListener('click', (e) => {
+          if (e.target === textModal) fecharModalTexto();
+        });
+      }
+
+      // Fecha com ESC
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && textModal && textModal.classList.contains('open')) fecharModalTexto();
+      });
+
       render();
     });
   </script>
+
+  <!-- ===== NOVO: modal de texto simples para copiar (Ctrl+C) ===== -->
+  <div id="textModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="textModalTitle">
+    <div class="modal-box">
+      <div class="modal-head">
+        <div id="textModalTitle" class="modal-title">Texto simples (Ctrl+C)</div>
+        <button id="btnCloseTextModal" class="modal-close" type="button">Fechar</button>
+      </div>
+      <div class="modal-body">
+        <textarea id="textModalContent" class="modal-textarea" readonly></textarea>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
